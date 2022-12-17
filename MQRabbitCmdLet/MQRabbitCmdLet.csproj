@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MQRabbitCmdLet</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.1">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="7.0.0-preview.2.22152.2" NoWarn="NU1605" />
+  </ItemGroup>
+
+</Project>
