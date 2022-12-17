@@ -1,4 +1,4 @@
 # MQRabbitCmdLet
 
 A C# cmdlet for powershell.
-Send messages to MQ queue or exchanges
+Send messages to an MQ queue or exchange
