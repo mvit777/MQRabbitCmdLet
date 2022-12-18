@@ -28,6 +28,12 @@ namespace MQRabbitCmdLet
             ValueFromPipelineByPropertyName = true)]
         public string MQHost { get; set; } = "localhost";
 
+        [Parameter(
+            Position = 3,
+            ValueFromPipelineByPropertyName = true)]
+        [ValidateSet("fanout", "direct", "topic")]
+        public string ExchangeType { get; set; } = "fanout";
+
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
         {
@@ -37,11 +43,12 @@ namespace MQRabbitCmdLet
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
         {
-            var result = new SendQueueResult
+            var result = new SendExchangeResult
             {
-                QueueName = TargetName,
+                ExchangeName = TargetName,
                 Message = Message,
-                MQHost = MQHost
+                MQHost = MQHost,
+                ExType= ExchangeType
             };
 
             WriteObject(result.SendMessage());

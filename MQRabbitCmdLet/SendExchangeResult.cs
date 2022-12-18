@@ -11,7 +11,7 @@ namespace MQRabbitCmdLet
         public string Message { get; set; }
         public string MQHost { get; set; } = "localhost";
         public string RoutingKey { get; set; } = "";
-        public string ExType { get; set; }
+        public string ExType { get; set; } = "fanout";
         public IDictionary<string, object> Arguments { get; set; } = null;
         public Dictionary<string, object> BasicProperties { get; set; } = null;
 
@@ -21,8 +21,7 @@ namespace MQRabbitCmdLet
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                //TODO set ExchangeType with a switch here
-                channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Fanout);
+                channel.ExchangeDeclare(exchange: ExchangeName, type: ExType);
 
                 var _message = Message;
                 var body = Encoding.UTF8.GetBytes(_message);
