@@ -5,11 +5,16 @@ using System.Text;
 
 namespace MQRabbitCmdLet
 {
-    internal class SendQueueResult
+    public class SendQueueResult
     {
         public string QueueName { get; set; }
         public string Message { get; set; }
         public string MQHost { get; set; } = "localhost";
+        public bool Durable { get; set; } = false;
+        public bool Exclusive { get; set; } = false;
+        public bool AutoDelete { get; set; } = false;
+        public IDictionary<string, object> Arguments { get; set; } = null;
+        public Dictionary<string, object> BasicProperties { get; set; } = null;
 
         public string SendMessage()
         {
@@ -18,17 +23,20 @@ namespace MQRabbitCmdLet
             using (var channel = connection.CreateModel())
             {
                 channel.QueueDeclare(queue: QueueName,
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
+                                     durable: Durable,
+                                     exclusive: Exclusive,
+                                     autoDelete: AutoDelete,
                                      arguments: null);
 
                 string _message = Message;
                 var body = Encoding.UTF8.GetBytes(_message);
 
+                var basicProperties = channel.CreateBasicProperties();
+                basicProperties.Persistent = Durable;
+                
                 channel.BasicPublish(exchange: "",
                                      routingKey: QueueName,
-                                     basicProperties: null,
+                                     basicProperties: basicProperties,
                                      body: body);
                 string result = String.Format(" [x] Sent {0}", _message);
 

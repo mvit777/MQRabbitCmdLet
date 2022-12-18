@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Text;
@@ -27,6 +28,26 @@ namespace MQRabbitCmdLet
             Position = 2,
             ValueFromPipelineByPropertyName = true)]
         public string MQHost { get; set; } = "localhost";
+        [Parameter(
+            Position = 3,
+            ValueFromPipelineByPropertyName = true)]
+        public bool Durable { get; set; } = false;
+        [Parameter(
+            Position = 4,
+            ValueFromPipelineByPropertyName = true)]
+        public bool Exclusive { get; set; } = false;
+        [Parameter(
+            Position = 5,
+            ValueFromPipelineByPropertyName = true)]
+        public bool AutoDelete { get; set; } = false;
+        [Parameter(
+            Position = 6,
+            ValueFromPipelineByPropertyName = true)]
+        public Dictionary<string, object> Arguments { get; set; } = null;
+        [Parameter(
+            Position = 7,
+            ValueFromPipelineByPropertyName = true)]
+        public Dictionary<string, object> BasicProperties { get; set; } = null;
 
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
@@ -41,7 +62,8 @@ namespace MQRabbitCmdLet
             {
                 QueueName = TargetName,
                 Message = Message,
-                MQHost = MQHost          
+                MQHost = MQHost,
+                Durable = Durable
             };
 
             WriteObject(result.SendMessage());
